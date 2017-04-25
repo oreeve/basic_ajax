@@ -2,6 +2,9 @@ class ProductsController < ApplicationController
   helper_method :sort_column, :sort_direction
   def index
     @products = Product.order("#{sort_column} #{sort_direction}").page(params[:page]).per(10)
+    if params[:search]
+      @products = @products.search(params[:search])
+    end
   end
 
   def show

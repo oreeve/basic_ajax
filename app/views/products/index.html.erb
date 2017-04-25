@@ -1,6 +1,14 @@
 <div class="container">
   <div class="well">
     <%= link_to "New Product", new_product_path, remote: true, class: "btn btn-primary" %>
+    <div class="pull-right">
+      <%= form_tag(products_path, :method => "get", id: "search-form") do %>
+        <div style="display:flex;">
+          <%= text_field_tag :search, params[:search], placeholder: "Search Products", class: "form-control" %>
+          <%= submit_tag "Search", :name => nil, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
   </div>
   <div class="new-product"></div>
 
@@ -17,9 +25,12 @@
       <%= render "index" %>
     </tbody>
   </table>
+  <% if @products.blank? %>
+    <h4 class="text-center">There are no recipes containing the term "<%= params[:search] %>".</h4>
+  <% end %>
 </div>
 <div id="product-modal" class="modal fade"></div>
 <div class="text-center">
-<%= paginate @products %><br>
-<%= page_entries_info @products %>
+  <%= paginate @products %><br>
+  <%= page_entries_info @products %>
 <div>
